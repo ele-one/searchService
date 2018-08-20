@@ -1,2 +1,1 @@
-# searchService
-A submodule of brown
+# heroku-boiler
