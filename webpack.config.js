@@ -1,6 +1,6 @@
 var path = require('path');
-var SRC_DIR = path.join(__dirname, '/react-client/src');
-var DIST_DIR = path.join(__dirname, '/react-client/dist');
+var SRC_DIR = path.join(__dirname, '/client/src');
+var DIST_DIR = path.join(__dirname, '/client/dist');
 var SPEC_DIR = path.join(__dirname, '/tests/clientSpecs');
 
 module.exports = {

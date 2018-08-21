@@ -8,7 +8,7 @@ module.exports = function (config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: [ 'Chrome' , 'Firefox', 'FirefoxDeveloper'],
+    browsers: [ 'Chrome' , 'Firefox'],
 
 
     // Continuous Integration mode
@@ -24,7 +24,7 @@ module.exports = function (config) {
 
     // list of files / patterns to load in the browser
     files: [
-      'react-client/src/components/**/*.jsx',
+      'client/src/components/**/*.jsx',
       { pattern: 'tests/clientSpecs/**/*.js', watched: true }
     ],
 
@@ -42,7 +42,7 @@ module.exports = function (config) {
     reporters: [ 'progress', 'coverage'],
 
     preprocessors: {
-      'react-client/src/components/**/*.jsx': ['webpack', 'coverage'],
+      'client/src/components/**/*.jsx': ['webpack', 'coverage'],
       'tests/clientSpecs/**/*.js': [ 'webpack'] //preprocess with webpack and our sourcemap loader
 
     },
