@@ -2,6 +2,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var request = require('request')
 var app = express();
+var fs = require('fs');
 
 app.use(express.static(__dirname + '/../client/dist'));
 
@@ -13,44 +14,27 @@ app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x
   API Routes
  + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +*/
 
-app.get('/monitor', monitor);
+app.post('/getFolders', getFolders);
+const SUCCESS_MSG = 'transaction succeeded';
+const ERROR_MSG = 'failed'
 
 /* + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
   API Route Functions
 + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + */
 
-function monitor(req,res) {
-  request('http://localhost:9001/getMicroservices', (error, response, body) => {
-    if (error) res.send('Error while getting microservices')
-    else res.send(body)
+function getFolders(req, res) {
+  console.log('Inside server folder')
+  const logtype = req.body.logtype;
+  const parentdir = 'caselogs/';
+
+  fs.readdir(parentdir + logtype, (err, result) => {
+    if (err) res.send(ERROR_MSG);
+    if (result) res.send(result);
   })
 }
 
 
-function restrict() {
-// code here if cookie is verified
-  // next()
-// else redirect to login page
-}
 
-function getItems(req, res) {
-  // req.params.id
-}
-
-
-function getProducts(arg, restrict, cb) {
-
-}
-
-
-function login(username, password) {
-  // req.body
-}
-
-
-function signup() {
-
-}
 
 var port = process.env.PORT || 5002;
 
