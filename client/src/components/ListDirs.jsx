@@ -84,7 +84,7 @@ class ListDirs extends React.Component {
 
     return (
       <div>
-        <Dropdown placeholder='Log type' fluid search selection options={this.state.dropdownOptions} onChange={this.handleLogTypeSelect}/>
+        <Dropdown id='logtype' placeholder='Log type' fluid search selection options={this.state.dropdownOptions} onChange={this.handleLogTypeSelect}/>
         {showFileBrowser}
       </div>
       )

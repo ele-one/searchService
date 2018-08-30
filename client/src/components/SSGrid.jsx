@@ -4,17 +4,20 @@ import ListDirs from './ListDirs.jsx';
 import ListCases from './ListCases.jsx';
 
 
-const SSGrid = () => (
+const SSGrid = (props) => (
   <Grid>
-    <Grid.Row>
-      <Grid.Column width={8}>
-        <ListCases />
-      </Grid.Column>
-      <Grid.Column width={8}>
-        <ListDirs />
-      </Grid.Column>
-    </Grid.Row>
 
+    <form>
+      <Grid.Row>
+        <Grid.Column width={8}>
+          <ListCases />
+        </Grid.Column>
+        <Grid.Column width={8}>
+          <ListDirs />
+        </Grid.Column>
+      </Grid.Row>
+      <Button secondary onClick={props.handleClick} >Search Now</Button>
+    </form>
     <Grid.Row>
       <Grid.Column width={8}>
 

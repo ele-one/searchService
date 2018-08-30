@@ -5,7 +5,7 @@ import { Table } from 'semantic-ui-react'
 const BrowseFileItems = (props) => (
 
     <Table.Row>
-      <Table.Cell>{props.item}</Table.Cell>
+      <Table.Cell id='casedir' >{props.item}</Table.Cell>
     </Table.Row>
   )
 
