@@ -3,7 +3,7 @@ import $ from 'jquery';
 import { Dropdown } from 'semantic-ui-react';
 
 const DropdownCases = (props) => (
-  <Dropdown placeholder='Case IOC' fluid multiple selection options={props.cases} />
+  <Dropdown id='ioc' placeholder='Case IOC' fluid multiple selection options={props.cases} />
 )
 
 
