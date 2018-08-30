@@ -14,7 +14,7 @@ app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x
   API Routes
  + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +*/
 
-app.post('/getFolders', getFolders);
+app.post('/getDirs', getDirs);
 const SUCCESS_MSG = 'transaction succeeded';
 const ERROR_MSG = 'failed'
 
@@ -22,17 +22,18 @@ const ERROR_MSG = 'failed'
   API Route Functions
 + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + */
 
-function getFolders(req, res) {
+function getDirs(req, res) {
   console.log('Inside server folder')
   const logtype = req.body.logtype;
-  const parentdir = 'caselogs/';
+  const parentdir = 'caselogs/' + logtype;
 
-  fs.readdir(parentdir + logtype, (err, result) => {
+  fs.readdir(parentdir, (err, result) => {
     if (err) res.send(ERROR_MSG);
-    if (result) res.send(result);
+    if (result) {
+      res.send(result);
+    }
   })
 }
-
 
 
 

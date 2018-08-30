@@ -1,6 +1,6 @@
 import React from 'react';
 import { Grid, Button, Dropdown } from 'semantic-ui-react';
-import ListFolders from './ListFolders.jsx';
+import ListDirs from './ListDirs.jsx';
 import ListFiles from './ListFiles.jsx';
 
 
@@ -51,7 +51,7 @@ const SSGrid = () => (
 
     <Grid.Row>
       <Grid.Column width={8}>
-        <ListFolders />
+        <ListDirs />
       </Grid.Column>
       <Grid.Column width={8}>
 
