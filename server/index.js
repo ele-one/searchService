@@ -14,27 +14,39 @@ app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x
   API Routes
  + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +*/
 
-app.post('/getDirs', getDirs);
+// app.post('/getDirs', getDirs);
+app.get('/getLogtypes', getLogtypes);
+
+
 const SUCCESS_MSG = 'transaction succeeded';
 const ERROR_MSG = 'failed'
+const LOGS_HOME_PATH = 'caselogs/'
 
 /* + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +
   API Route Functions
 + + + + + + + + + + + + + + + + + + + + + + + + + + + + + + */
 
-function getDirs(req, res) {
-  console.log('Inside server folder')
-  const logtype = req.body.logtype;
-  const parentdir = 'caselogs/' + logtype;
+// function getDirs(req, res) {
+//   console.log('Inside server folder')
+//   const logtype = req.body.logtype;
+//   const parentdir = 'caselogs/' + logtype;
 
-  fs.readdir(parentdir, (err, result) => {
+//   fs.readdir(parentdir, (err, result) => {
+//     if (err) res.send(ERROR_MSG);
+//     if (result) {
+//       res.send(result);
+//     }
+//   })
+// }
+
+function getLogtypes(req, res) {
+  fs.readdir(LOGS_HOME_PATH, (err, result) => {
     if (err) res.send(ERROR_MSG);
     if (result) {
       res.send(result);
     }
   })
 }
-
 
 
 var port = process.env.PORT || 5002;
