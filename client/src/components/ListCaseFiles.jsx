@@ -1,11 +1,11 @@
 import React from 'react'
-import { Table } from 'semantic-ui-react'
+import { Table,  Checkbox } from 'semantic-ui-react'
 import $ from 'jquery';
 
 const ListFileItem = (props) => (
 
     <Table.Row>
-      <Table.Cell onClick={props.handleClick}> {props.item} </Table.Cell>
+      <Table.Cell >  <Checkbox label={props.item} onChange={props.handleSelect} />  </Table.Cell>
     </Table.Row>
   )
 
@@ -16,12 +16,13 @@ class ListCaseFiles extends React.Component {
     super(props);
 
     this.fetchCaseFiles = this.fetchCaseFiles.bind(this);
-    this.handleClick = this.handleClick.bind(this);
-
+    this.handleSelect = this.handleSelect.bind(this);
+    this.SELECTED_FILES = [];
 
     this.state = {
       caseFiles: [],
-      clickedFiles: []
+      checkedFiles: [],
+      label: []
     }
   }
 
@@ -40,13 +41,35 @@ class ListCaseFiles extends React.Component {
   }
 
 
-  handleClick(e) {
-    var clickedFiles = e.target.textContent
+  // handleClick(e) {
+  //   debugger
+  //   var clickedFiles = e.target.textContent
+  //   this.setState({
+  //     clickedFiles: clickedFiles
+  //   })
+  //   this.props.handleCaseFilesSelection(clickedFiles);
+  // }
+
+
+
+  handleSelect(e, val) {
+    if (val.checked) {
+      this.SELECTED_FILES.push(val.label)
+
+    } else {
+      var idx = this.SELECTED_FILES.indexOf(val.label)
+      this.SELECTED_FILES.splice(idx, 1)
+    }
+
     this.setState({
-      clickedFiles: clickedFiles
+      checkedFiles: this.SELECTED_FILES
     })
-    this.props.handleCaseFilesSelection(clickedFiles);
+
+    this.props.handleCaseFilesSelection(this.SELECTED_FILES);
+
   }
+
+
 
   render() {
 
@@ -56,7 +79,7 @@ class ListCaseFiles extends React.Component {
     };
 
     const listItems = this.state.caseFiles.map( (item, idx) => {
-      return <ListFileItem handleClick={this.handleClick} key={idx} item={item}/>
+      return <ListFileItem handleSelect={this.handleSelect} key={idx} item={item}/>
     })
 
     return (
