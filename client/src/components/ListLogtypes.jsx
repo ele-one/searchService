@@ -1,7 +1,6 @@
 import React from 'react';
 import $ from 'jquery';
 import { Dropdown } from 'semantic-ui-react';
-import BrowseFiles from './BrowseFiles.jsx';
 
 
 class ListLogtypes extends React.Component {

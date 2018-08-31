@@ -2,7 +2,7 @@ import React from 'react'
 import { Table } from 'semantic-ui-react'
 import $ from 'jquery';
 
-const ListDirItem = (props) => (
+const ListFileItem = (props) => (
 
     <Table.Row>
       <Table.Cell onClick={props.handleClick}> {props.item} </Table.Cell>
@@ -10,27 +10,27 @@ const ListDirItem = (props) => (
   )
 
 
-class ListCaseDirs extends React.Component {
+class ListCaseFiles extends React.Component {
 
   constructor(props) {
     super(props);
 
-    this.fetchCaseDirs = this.fetchCaseDirs.bind(this);
+    this.fetchCaseFiles = this.fetchCaseFiles.bind(this);
     this.handleClick = this.handleClick.bind(this);
-    this.fetchCaseDirs(this.props.selectedLogType);
+    this.fetchCaseFiles(this.props.selectedLogType, this.props.selectedCaseDir);
 
     this.state = {
-      caseDirs: []
+      caseFiles: []
     }
   }
 
-  fetchCaseDirs(logtype) {
+  fetchCaseFiles(logtype, caseDir) {
     $.ajax({
-      url:'/getCaseDirs/' + logtype,
+      url:'/getCaseDirs/' + logtype + '/' + caseDir,
       method:'GET',
-      success: (caseDirs) => {
+      success: (caseFiles) => {
         this.setState({
-          caseDirs: caseDirs
+          caseFiles: caseFiles
         })
       },
       error: (err) => {
@@ -40,9 +40,8 @@ class ListCaseDirs extends React.Component {
 
 
   handleClick(e) {
-    var clickedDir = e.target.textContent
-    clickedDir = clickedDir.split(' ')[1]
-    this.props.handleCaseDirSelection(clickedDir);
+    var clickedFiles = e.target.textContent
+    this.props.handleCaseFilesSelection(clickedFiles);
   }
 
   render() {
@@ -51,15 +50,15 @@ class ListCaseDirs extends React.Component {
       color: 'brown'
     };
 
-    const listItems = this.state.caseDirs.map( (item, idx) => {
-      return <ListDirItem handleClick={this.handleClick} key={idx} item={item}/>
+    const listItems = this.state.caseFiles.map( (item, idx) => {
+      return <ListFileItem handleClick={this.handleClick} key={idx} item={item}/>
     })
 
     return (
       <Table celled selectable>
         <Table.Header>
           <Table.Row>
-            <Table.HeaderCell style={divStyle}> Case directories </Table.HeaderCell>
+            <Table.HeaderCell style={divStyle}> {this.props.caseDir} </Table.HeaderCell>
           </Table.Row>
         </Table.Header>
         <Table.Body>
@@ -71,4 +70,4 @@ class ListCaseDirs extends React.Component {
 }
 
 
-export default ListCaseDirs
+export default ListCaseFiles
