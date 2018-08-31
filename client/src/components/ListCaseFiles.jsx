@@ -17,10 +17,11 @@ class ListCaseFiles extends React.Component {
 
     this.fetchCaseFiles = this.fetchCaseFiles.bind(this);
     this.handleClick = this.handleClick.bind(this);
-    this.fetchCaseFiles(this.props.selectedLogType, this.props.selectedCaseDir);
+
 
     this.state = {
-      caseFiles: []
+      caseFiles: [],
+      clickedFiles: []
     }
   }
 
@@ -41,11 +42,15 @@ class ListCaseFiles extends React.Component {
 
   handleClick(e) {
     var clickedFiles = e.target.textContent
+    this.setState({
+      clickedFiles: clickedFiles
+    })
     this.props.handleCaseFilesSelection(clickedFiles);
   }
 
   render() {
 
+    this.fetchCaseFiles(this.props.selectedLogType, this.props.selectedCaseDir);
     const divStyle = {
       color: 'brown'
     };
@@ -58,7 +63,7 @@ class ListCaseFiles extends React.Component {
       <Table celled selectable>
         <Table.Header>
           <Table.Row>
-            <Table.HeaderCell style={divStyle}> {this.props.caseDir} </Table.HeaderCell>
+            <Table.HeaderCell style={divStyle}> Inside: {this.props.selectedCaseDir} </Table.HeaderCell>
           </Table.Row>
         </Table.Header>
         <Table.Body>
