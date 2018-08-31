@@ -16,7 +16,7 @@ app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x
 
 // app.post('/getDirs', getDirs);
 app.get('/getLogtypes', getLogtypes);
-
+app.get('/getCaseDirs/:logtype/:caseDir?', getCaseDirs);
 
 const SUCCESS_MSG = 'transaction succeeded';
 const ERROR_MSG = 'failed'
@@ -47,6 +47,22 @@ function getLogtypes(req, res) {
     }
   })
 }
+
+
+function getCaseDirs(req, res) {
+  const logtype = req.params.logtype;
+  const caseDir = req.params.caseDir || '';
+  console.log(req.params)
+  const path = LOGS_HOME_PATH + logtype + '/' + caseDir
+  console.log(path)
+  fs.readdir(path, (err, result) => {
+    if (err) res.send(ERROR_MSG);
+    if (result) {
+      res.send(result);
+    }
+  })
+}
+
 
 
 var port = process.env.PORT || 5002;

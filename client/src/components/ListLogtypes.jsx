@@ -1,10 +1,9 @@
 import React from 'react';
 import $ from 'jquery';
 import { Dropdown } from 'semantic-ui-react';
-import BrowseFiles from './BrowseFiles.jsx';
 
 
-class ListDirs extends React.Component {
+class ListLogtypes extends React.Component {
   constructor(props) {
     super(props);
     this.handleLogTypeSelect = this.handleLogTypeSelect.bind(this)
@@ -51,4 +50,4 @@ class ListDirs extends React.Component {
 
 
 
-export default ListDirs
+export default ListLogtypes
