@@ -3,7 +3,7 @@ import $ from 'jquery';
 import { Dropdown } from 'semantic-ui-react';
 
 const DropdownCases = (props) => (
-  <Dropdown id='ioc' placeholder='Case IOC' fluid multiple selection options={props.cases} />
+  <Dropdown id='ioc' name='mycases' placeholder='Case IOC' fluid multiple selection options={props.cases}  onChange={props.handleChange}/>
 )
 
 
@@ -11,35 +11,27 @@ class ListCases extends React.Component {
 
   constructor(props) {
     super(props);
+    this.handleChange = this.handleChange.bind(this)
     this.state = {
-      cases: ['abc', 'xyz', 'ooo', 'ppp'] //remove when ajax is working
+      cases: ['abc', 'xyz', 'ooo', 'ppp'], //remove when ajax is working
+      value: []
     }
   }
 
   componentDidMount() {
 
-    // uncomment after implementing the route in crudService
+  }
 
-    // $.ajax({
-    //   // get distinct cases from crudService ONLY
-    //   url: 'http://localhost:5001/getCases',
-    //   method: 'GET',
-    //   success: (result) => {
-    //     this.setState({
-    //       cases: result
-    //     })
-    //   },
-    //   error: (err) => {
-    //     console.error(err);
-    //   }
-    // })
+ handleChange(e, {value} ) {
+    this.setState({ value })
+
+    var userInput = this.state.value
+    this.props.handleIOCCaseIDSelection(userInput)
   }
 
   render() {
     if (this.state.cases.length > 0) {
-
       var casesParsed = [];
-      // debugger
       this.state.cases.forEach( (c) => {
         casesParsed.push({key: c, text: c, value: c})
       })
@@ -47,7 +39,7 @@ class ListCases extends React.Component {
 
 
     return (
-      <DropdownCases cases={casesParsed} />
+      <DropdownCases cases={casesParsed} handleChange={this.handleChange} />
     )
   }
 }
