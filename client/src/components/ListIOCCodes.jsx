@@ -3,11 +3,11 @@ import $ from 'jquery';
 import { Dropdown } from 'semantic-ui-react';
 
 const DropdownCases = (props) => (
-  <Dropdown id='ioc' name='mycases' placeholder='Case IOC' fluid multiple selection options={props.cases}  onChange={props.handleChange}/>
+  <Dropdown id='ioc' name='mycases' placeholder='Select IOC code names to search' fluid multiple selection options={props.cases}  onChange={props.handleChange}/>
 )
 
 
-class ListCases extends React.Component {
+class ListIOCCodes extends React.Component {
 
   constructor(props) {
     super(props);
@@ -46,7 +46,7 @@ class ListCases extends React.Component {
 
 
 
-export default ListCases;
+export default ListIOCCodes;
 
 
 

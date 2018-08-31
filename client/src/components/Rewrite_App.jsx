@@ -2,9 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import $ from 'jquery';
 import { Grid, Button, Dropdown } from 'semantic-ui-react';
-import ListCases from './ListCases.jsx'
-import ListDirs from './ListDirs.jsx'
-
+import ListIOCCodes from './ListIOCCodes.jsx';
+import ListLogtypes from './ListLogtypes.jsx';
+import ListCaseDirs from './ListCaseDirs.jsx';
 
 
 
@@ -23,14 +23,12 @@ class Rewrite_App extends React.Component {
 
 
   handleIOCCaseIDSelection(userInput) {
-    debugger;
     this.setState({
       selectedIOCCaseIDs: userInput
     })
   }
 
   handleLogTypeSelection(userInput) {
-    debugger
     this.setState({
       selectedLogType: userInput
     })
@@ -43,14 +41,21 @@ class Rewrite_App extends React.Component {
 
   render() {
 
+    var ListCaseDirsComponent;
+
+    if (this.state.selectedLogType !== null) {
+
+      ListCaseDirsComponent = <ListCaseDirs selectedLogType={this.state.selectedLogType} />
+    }
+
     return (
       <Grid>
         <Grid.Row>
           <Grid.Column width={8}>
             <form onSubmit={this.handleSubmit}>
-              <ListCases handleIOCCaseIDSelection={this.handleIOCCaseIDSelection}/>
-              <ListDirs handleLogTypeSelection={this.handleLogTypeSelection}/>
-
+              <ListIOCCodes handleIOCCaseIDSelection={this.handleIOCCaseIDSelection}/>
+              <ListLogtypes handleLogTypeSelection={this.handleLogTypeSelection}/>
+              {ListCaseDirsComponent}
             </form>
           </Grid.Column>
           <Grid.Column width={8}>
@@ -70,3 +75,5 @@ class Rewrite_App extends React.Component {
 }
 
 export default Rewrite_App
+
+
