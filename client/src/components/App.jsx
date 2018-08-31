@@ -38,7 +38,6 @@ class App extends React.Component {
   }
 
   handleCaseDirSelection(userInput) {
-    debugger
     this.setState({
       selectedCaseDir: userInput
     })
@@ -58,7 +57,6 @@ class App extends React.Component {
   }
 
   render() {
-
     var ListCaseDirsComponent;
     var ListCaseFilesComponent;
 
@@ -69,6 +67,10 @@ class App extends React.Component {
     if (this.state.selectedCaseDir !== null) {
       ListCaseFilesComponent = <ListCaseFiles selectedLogType={this.state.selectedLogType} selectedCaseDir={this.state.selectedCaseDir} handleCaseFilesSelection={this.handleCaseFilesSelection} />
     }
+
+
+
+    console.log(this.state.selectedCaseFiles)
 
     return (
       <Grid>

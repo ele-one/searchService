@@ -8,7 +8,8 @@ class ListLogtypes extends React.Component {
     super(props);
     this.handleLogTypeSelect = this.handleLogTypeSelect.bind(this)
     this.state = {
-      dropdownOptions: []
+      dropdownOptions: [],
+      selectedLogtype: null
     }
 
 }
@@ -31,7 +32,13 @@ class ListLogtypes extends React.Component {
   }
 
   handleLogTypeSelect(e) {
+
     var selectedLogtype = e.target.textContent
+    this.setState({
+      selectedLogtype: selectedLogtype
+    })
+
+
     this.props.handleLogTypeSelection(selectedLogtype)
 
   }
