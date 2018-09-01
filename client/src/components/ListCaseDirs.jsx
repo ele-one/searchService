@@ -17,7 +17,7 @@ class ListCaseDirs extends React.Component {
 
     this.fetchCaseDirs = this.fetchCaseDirs.bind(this);
     this.handleClick = this.handleClick.bind(this);
-    // this.fetchCaseDirs(this.props.selectedLogType);
+    this.fetchCaseDirs(this.props.selectedLogType);
 
     this.state = {
       caseDirs: [],
@@ -51,9 +51,16 @@ class ListCaseDirs extends React.Component {
     this.props.handleCaseDirSelection(clickedDir);
   }
 
+
+
+  componentDidUpdate(prevProps) {
+    if (this.props.selectedLogType !== prevProps.selectedLogType) {
+      this.fetchCaseDirs(this.props.selectedLogType);
+    }
+  }
+
   render() {
 
-    this.fetchCaseDirs(this.props.selectedLogType);
     const divStyle = {
       color: 'brown'
     };
