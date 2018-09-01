@@ -17,11 +17,20 @@ class ListCaseDirs extends React.Component {
 
     this.fetchCaseDirs = this.fetchCaseDirs.bind(this);
     this.handleClick = this.handleClick.bind(this);
-    this.fetchCaseDirs(this.props.selectedLogType);
 
     this.state = {
       caseDirs: [],
       clickedDir:null
+    }
+  }
+
+  componentDidMount() {
+    this.fetchCaseDirs(this.props.selectedLogType);
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.selectedLogType !== prevProps.selectedLogType) {
+      this.fetchCaseDirs(this.props.selectedLogType);
     }
   }
 
@@ -51,13 +60,6 @@ class ListCaseDirs extends React.Component {
     this.props.handleCaseDirSelection(clickedDir);
   }
 
-
-
-  componentDidUpdate(prevProps) {
-    if (this.props.selectedLogType !== prevProps.selectedLogType) {
-      this.fetchCaseDirs(this.props.selectedLogType);
-    }
-  }
 
   render() {
 
