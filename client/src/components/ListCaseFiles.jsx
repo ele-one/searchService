@@ -2,12 +2,22 @@ import React from 'react'
 import { Table,  Checkbox } from 'semantic-ui-react'
 import $ from 'jquery';
 
-const ListFileItem = (props) => (
+const ListFileItem = (props) => {
+  if (props.selectAllChecked) {
+    return (
 
-    <Table.Row>
-      <Table.Cell >  <Checkbox label={props.item} onChange={props.handleSelect} />  </Table.Cell>
-    </Table.Row>
-  )
+      <Table.Row>
+        <Table.Cell >  <Checkbox checked={true} label={props.item} onChange={props.handleSelect} />  </Table.Cell>
+      </Table.Row>
+      )
+  } else {
+    return (
+      <Table.Row>
+        <Table.Cell >  <Checkbox label={props.item} onChange={props.handleSelect} />  </Table.Cell>
+      </Table.Row>
+    )
+  }
+}
 
 
 class ListCaseFiles extends React.Component {
@@ -23,7 +33,8 @@ class ListCaseFiles extends React.Component {
       caseFiles: [],
       checkedFiles: [],
       label: [],
-      unRender: false
+      unRender: false,
+      selectAllChecked: false
     }
   }
 
@@ -54,9 +65,12 @@ class ListCaseFiles extends React.Component {
       url:'/getCaseDirs/' + logtype + '/' + caseDir,
       method:'GET',
       success: (caseFiles) => {
+        if (caseFiles.length > 1) {
+          caseFiles.unshift('Select All')
+        }
         this.setState({
           caseFiles: caseFiles
-        })
+      })
       },
       error: (err) => {
       }
@@ -66,6 +80,14 @@ class ListCaseFiles extends React.Component {
 
 
   handleSelect(e, val) {
+
+    if (val.label === 'Select All') {
+      this.setState({
+        selectAllChecked: !this.state.selectAllChecked
+      })
+    }
+
+
     if (val.checked) {
       this.SELECTED_FILES.push(val.label)
 
@@ -89,7 +111,7 @@ class ListCaseFiles extends React.Component {
     };
 
     const listItems = this.state.caseFiles.map( (item, idx) => {
-      return <ListFileItem handleSelect={this.handleSelect} key={idx} item={item}/>
+      return <ListFileItem selectAllChecked={this.state.selectAllChecked} handleSelect={this.handleSelect} key={idx} item={item}/>
     })
 
 
