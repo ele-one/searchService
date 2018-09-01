@@ -23,17 +23,15 @@ class ListIOCCodes extends React.Component {
   }
 
  handleChange(e, {value} ) {
-    this.setState({ value })
-
-    var userInput = this.state.value
-    this.props.handleIOCCaseIDSelection(userInput)
+    this.setState({ value });
+    this.props.handleIOCCaseIDSelection(value);
   }
 
   render() {
     if (this.state.cases.length > 0) {
       var casesParsed = [];
       this.state.cases.forEach( (c) => {
-        casesParsed.push({key: c, text: c, value: c})
+        casesParsed.push({key: c, text: c, value: c});
       })
     }
 
