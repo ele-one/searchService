@@ -45,7 +45,6 @@ class App extends React.Component {
 
 
   handleCaseFilesSelection(userInput) {
-    debugger
     this.setState({
       selectedCaseFiles: userInput
     })

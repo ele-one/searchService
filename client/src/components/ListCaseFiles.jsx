@@ -27,11 +27,11 @@ class ListCaseFiles extends React.Component {
 
     this.fetchCaseFiles = this.fetchCaseFiles.bind(this);
     this.handleSelect = this.handleSelect.bind(this);
+    this.handleSelectAll = this.handleSelectAll.bind(this);
     this.SELECTED_FILES = [];
 
     this.state = {
       caseFiles: [],
-      checkedFiles: [],
       label: [],
       unRender: false,
       selectAllChecked: false
@@ -77,32 +77,40 @@ class ListCaseFiles extends React.Component {
     })
   }
 
-
-
-  handleSelect(e, val) {
-
-    if (val.label === 'Select All') {
-      this.setState({
-        selectAllChecked: !this.state.selectAllChecked
-      })
-    }
-
+  handleSelectAll(val) {
+    this.setState({
+      selectAllChecked: !this.state.selectAllChecked
+    });
 
     if (val.checked) {
-      this.SELECTED_FILES.push(val.label)
-
+      this.SELECTED_FILES = this.state.caseFiles.slice(1);
     } else {
-      var idx = this.SELECTED_FILES.indexOf(val.label)
-      this.SELECTED_FILES.splice(idx, 1)
+      this.SELECTED_FILES = [];
     }
-
-    this.setState({
-      checkedFiles: this.SELECTED_FILES
-    })
 
     this.props.handleCaseFilesSelection(this.SELECTED_FILES);
 
   }
+
+  handleSelect(e, val) {
+
+    if (val.label === 'Select All') {
+      this.handleSelectAll(val);
+    }
+
+    if (val.checked && val.label !== 'Select All') {
+      this.SELECTED_FILES.push(val.label);
+
+    } else if (!val.checked && val.label !== 'Select All') {
+      var idx = this.SELECTED_FILES.indexOf(val.label);
+      this.SELECTED_FILES.splice(idx, 1);
+    }
+
+    this.props.handleCaseFilesSelection(this.SELECTED_FILES);
+  }
+
+
+
 
   render() {
 
