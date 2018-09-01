@@ -19,13 +19,33 @@ class ListCaseFiles extends React.Component {
     this.handleSelect = this.handleSelect.bind(this);
     this.SELECTED_FILES = [];
 
-    this.fetchCaseFiles(this.props.selectedLogType, this.props.selectedCaseDir);
-
     this.state = {
       caseFiles: [],
       checkedFiles: [],
       label: [],
       unRender: false
+    }
+  }
+
+
+  componentDidMount() {
+    this.fetchCaseFiles(this.props.selectedLogType, this.props.selectedCaseDir);
+
+  }
+
+  componentDidUpdate(prevProps) {
+
+    if (this.props.selectedLogType !== prevProps.selectedLogType) {
+      this.setState({
+        unRender: true
+      })
+    }
+
+    if (this.props.selectedCaseDir !== prevProps.selectedCaseDir) {
+      this.fetchCaseFiles(this.props.selectedLogType, this.props.selectedCaseDir);
+      this.setState({
+        unRender: false
+      })
     }
   }
 
@@ -70,22 +90,6 @@ class ListCaseFiles extends React.Component {
 
     this.props.handleCaseFilesSelection(this.SELECTED_FILES);
 
-  }
-
-  componentDidUpdate(prevProps) {
-
-    if (this.props.selectedLogType !== prevProps.selectedLogType) {
-      this.setState({
-        unRender: true
-      })
-    }
-
-    if (this.props.selectedCaseDir !== prevProps.selectedCaseDir) {
-      this.fetchCaseFiles(this.props.selectedLogType, this.props.selectedCaseDir);
-      this.setState({
-        unRender: false
-      })
-    }
   }
 
   render() {
