@@ -64,16 +64,6 @@ class ListCaseFiles extends React.Component {
   }
 
 
-  // handleClick(e) {
-  //   debugger
-  //   var clickedFiles = e.target.textContent
-  //   this.setState({
-  //     clickedFiles: clickedFiles
-  //   })
-  //   this.props.handleCaseFilesSelection(clickedFiles);
-  // }
-
-
 
   handleSelect(e, val) {
     if (val.checked) {
