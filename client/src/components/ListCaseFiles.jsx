@@ -19,10 +19,13 @@ class ListCaseFiles extends React.Component {
     this.handleSelect = this.handleSelect.bind(this);
     this.SELECTED_FILES = [];
 
+    this.fetchCaseFiles(this.props.selectedLogType, this.props.selectedCaseDir);
+
     this.state = {
       caseFiles: [],
       checkedFiles: [],
-      label: []
+      label: [],
+      unRender: false
     }
   }
 
@@ -69,11 +72,24 @@ class ListCaseFiles extends React.Component {
 
   }
 
+  componentDidUpdate(prevProps) {
 
+    if (this.props.selectedLogType !== prevProps.selectedLogType) {
+      this.setState({
+        unRender: true
+      })
+    }
+
+    if (this.props.selectedCaseDir !== prevProps.selectedCaseDir) {
+      this.fetchCaseFiles(this.props.selectedLogType, this.props.selectedCaseDir);
+      this.setState({
+        unRender: false
+      })
+    }
+  }
 
   render() {
 
-    this.fetchCaseFiles(this.props.selectedLogType, this.props.selectedCaseDir);
     const divStyle = {
       color: 'brown'
     };
@@ -82,18 +98,23 @@ class ListCaseFiles extends React.Component {
       return <ListFileItem handleSelect={this.handleSelect} key={idx} item={item}/>
     })
 
-    return (
-      <Table celled selectable>
-        <Table.Header>
-          <Table.Row>
-            <Table.HeaderCell style={divStyle}> Inside: {this.props.selectedCaseDir} </Table.HeaderCell>
-          </Table.Row>
-        </Table.Header>
-        <Table.Body>
-          {listItems}
-        </Table.Body>
-      </Table>
-    )
+
+    if (this.state.unRender) {
+      return null
+    } else {
+      return (
+        <Table celled selectable>
+          <Table.Header>
+            <Table.Row>
+              <Table.HeaderCell style={divStyle}> Inside: {this.props.selectedCaseDir} </Table.HeaderCell>
+            </Table.Row>
+          </Table.Header>
+          <Table.Body>
+            {listItems}
+          </Table.Body>
+        </Table>
+      )
+    }
   }
 }
 
