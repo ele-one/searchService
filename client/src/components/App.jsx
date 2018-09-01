@@ -54,7 +54,17 @@ class App extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    debugger
+    $.ajax({
+      url: '/search',
+      method: 'POST',
+      data: this.state,
+      success: (result) => {
+        debugger
+      },
+      error: (err) => {
+        console.log('error')
+      }
+    })
   }
 
   render() {

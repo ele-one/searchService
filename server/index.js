@@ -17,6 +17,7 @@ app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x
 // app.post('/getDirs', getDirs);
 app.get('/getLogtypes', getLogtypes);
 app.get('/getCaseDirs/:logtype/:caseDir?', getCaseDirs);
+app.post('/search', search)
 
 const SUCCESS_MSG = 'transaction succeeded';
 const ERROR_MSG = 'failed'
@@ -63,7 +64,10 @@ function getCaseDirs(req, res) {
   })
 }
 
-
+function search(req, res) {
+  console.log(req.body)
+  res.send('success')
+}
 
 var port = process.env.PORT || 5002;
 
