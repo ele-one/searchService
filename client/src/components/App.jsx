@@ -15,6 +15,7 @@ class App extends React.Component {
     this.handleLogTypeSelection = this.handleLogTypeSelection.bind(this);
     this.handleCaseDirSelection = this.handleCaseDirSelection.bind(this);
     this.handleCaseFilesSelection = this.handleCaseFilesSelection.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
 
     this.state = {
       selectedIOCCaseIDs: [],
@@ -51,8 +52,19 @@ class App extends React.Component {
   }
 
 
-  handleSubmit() {
-
+  handleSubmit(e) {
+    e.preventDefault();
+    $.ajax({
+      url: '/search',
+      method: 'POST',
+      data: this.state,
+      success: (result) => {
+        debugger
+      },
+      error: (err) => {
+        console.log('error')
+      }
+    })
   }
 
   render() {
@@ -68,9 +80,6 @@ class App extends React.Component {
     }
 
 
-
-    console.log(this.state.selectedCaseFiles)
-
     return (
       <Grid>
         <Grid.Row>
@@ -80,6 +89,7 @@ class App extends React.Component {
               <ListLogtypes handleLogTypeSelection={this.handleLogTypeSelection}/>
               {ListCaseDirsComponent}
               {ListCaseFilesComponent}
+              <input type="submit" value="Submit" />
             </form>
           </Grid.Column>
           <Grid.Column width={8}>
