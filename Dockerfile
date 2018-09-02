@@ -28,6 +28,6 @@ CMD [ "npm", "start"]
 # Two things 1) EXPOSE and 2) using -p in the docker run cmd for publish.
 # EXPOSE is used for inter dockers communication. Publishing is important when the service needs to be accessed from outside e.g localhost.
 
-It is not needed when doing -p because it will expose too. But still good to have for later when -p is not used for outside access and just want to allow container <-> container communication.
+# It is not needed when doing -p because it will expose too. But still good to have for later when -p is not used for outside access and just want to allow container <-> container communication.
 
 EXPOSE 5002
