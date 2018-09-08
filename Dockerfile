@@ -17,13 +17,10 @@ RUN npm install
 # Copying everything from the local folder where the Dockerfile exist to the docker's '/searchService'
 COPY . /searchService
 
-
 # Note the above 'COPY . /searchService' could be achieved using relative path '.', since we are already in the searchService as we did WORKDIR above and did not change path after that.
 # COPY . .
 
-CMD ["npm", "client"]
-CMD [ "npm", "start"]
-
+CMD npm run postinstall && npm run start
 
 # Two things 1) EXPOSE and 2) using -p in the docker run cmd for publish.
 # EXPOSE is used for inter dockers communication. Publishing is important when the service needs to be accessed from outside e.g localhost.
