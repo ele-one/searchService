@@ -7,11 +7,10 @@ try {
 
 catch(e) {
   var config = {
-    HOST    : process.env.CLEARDB_DATABASE_HOST,
-    USER    : process.env.CLEARDB_DATABASE_USER,
-    PASSWORD  : process.env.CLEARDB_DATABASE_PASSWD,
-    DATABASE : process.env.CLEARDB_DATABASE,
-    CLIENT_ID: process.env.CLIENT_ID,
+    HOST     : 'searchdb-node',
+    USER    : process.env.MYSQL_USER,
+    PASSWORD : process.env.MYSQL_ROOT_PASSWORD,
+    DATABASE : process.env.MYSQL_DATABASE,
     PORT: 3306
   }
 }
