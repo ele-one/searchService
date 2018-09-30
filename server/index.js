@@ -3,6 +3,7 @@ var bodyParser = require('body-parser');
 var request = require('request')
 var app = express();
 var fs = require('fs');
+var readline = require('readline');
 
 app.use(express.static(__dirname + '/../client/dist'));
 
@@ -53,9 +54,7 @@ function getLogtypes(req, res) {
 function getCaseDirs(req, res) {
   const logtype = req.params.logtype;
   const caseDir = req.params.caseDir || '';
-  console.log(req.params)
-  const path = LOGS_HOME_PATH + logtype + '/' + caseDir
-  console.log(path)
+  const path = LOGS_HOME_PATH + logtype + '/' + caseDir;
   fs.readdir(path, (err, result) => {
     if (err) res.send(ERROR_MSG);
     if (result) {
@@ -65,9 +64,79 @@ function getCaseDirs(req, res) {
 }
 
 function search(req, res) {
-  console.log(req.body)
-  res.send('success')
-}
+
+  var cases = req.body.selectedIOCCaseIDs;
+  var logType = req.body.selectedLogType;
+  var logDir = req.body.selectedCaseDir;
+  var files = req.body.selectedCaseFiles;
+
+  var logFilesOFAllCases = [];
+
+  for (var i = 0; i < cases.length; i++) {
+    for (var j = 0; j < files.length; j++) {
+      logFilesOFAllCases.push(`${LOGS_HOME_PATH}${logType}/${cases[i]}/${logDir}/${files[j]}`);
+    }
+  }
+
+  // // hardcoding one file from logFilesOFAllCases;
+  var logFile = 'caselogs/access/neuron/access.log.1';
+
+// Method 1
+  // var stream = fs.createReadStream(logFile, 'utf8');
+
+  // stream.on('data', (chunk) => {
+  //   if (chunk.includes('yasdsdshoo')) console.log('data of stream is', chunk.toString());
+  // });
+  // stream.on('error',(err) => {
+  //     console.log(err)
+  // });
+  // stream.on('close', (err) => {
+  //    console.log(err)
+  // });
+
+
+// Method 2
+  // fs.readFile(logFile, (err, data) => {
+  //   console.log('data of file is', data);
+  //   if(data.indexOf('yahoowewewew') >= 0){
+  //    console.log('founddd', data)
+  //   }
+  // })
+
+  // console.log(logFilesOFAllCases)
+
+
+
+// MEthod 3
+
+  var IOC = ['yahoo', 'splunk'];
+
+  var OUTPUT_PATH = LOGS_HOME_PATH+'result/'
+  var OUTPUT_FILE = OUTPUT_PATH+'test.txt'
+
+
+  const rl = readline.createInterface({
+    input: fs.createReadStream(logFile),
+    crlfDelay: Infinity
+  });
+
+  rl.on('line', (line) => {
+    if (!fs.existsSync(OUTPUT_PATH)) fs.mkdirSync(OUTPUT_PATH);
+
+    var writeStream = fs.createWriteStream(OUTPUT_FILE, {'flags': 'a'});
+
+    for (var i = 0; i < IOC.length; i++) {
+      if (line.includes(IOC[i])) {
+        writeStream.write(`Line from file ${logFile} for ${IOC[i]}: ${line} \n`);
+        console.log(`Line from file ${logFile} for ${IOC[i]}: ${line}`);
+      }
+    }
+
+    writeStream.end();
+  });
+
+    res.send('success')
+  }
 
 var port = process.env.PORT || 5002;
 

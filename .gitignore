@@ -1,6 +1,7 @@
 package-lock.json
 config.js
 client/dist/bundle.js
+caselogs/result
 
 # Logs
 logs
