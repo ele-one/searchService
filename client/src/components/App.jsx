@@ -60,6 +60,7 @@ class App extends React.Component {
       data: this.state,
       success: (result) => {
         debugger
+        console.log('from search service', result)
       },
       error: (err) => {
         console.log('error')
