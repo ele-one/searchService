@@ -13,7 +13,7 @@ class ListIOCCodes extends React.Component {
     super(props);
     this.handleChange = this.handleChange.bind(this)
     this.state = {
-      cases: ['APT28', 'APT30', 'Bearz'], //remove when ajax is working
+      cases: ['APT28', 'APT30', 'Bearz', 'APT120', 'APT100'], //remove when ajax is working
       value: []
     }
   }
