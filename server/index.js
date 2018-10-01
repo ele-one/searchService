@@ -70,77 +70,61 @@ function search(req, res) {
   var logDir = req.body.selectedCaseDir;
   var files = req.body.selectedCaseFiles;
 
-  var logFilesOFAllCases = [];
+
+  var OUTPUT_PATH = LOGS_HOME_PATH+'result/';
+  var OUTPUT_FILE = OUTPUT_PATH+'test.txt';
+
+  if (!fs.existsSync(OUTPUT_PATH)) fs.mkdirSync(OUTPUT_PATH);
+  var writeStream = fs.createWriteStream(OUTPUT_FILE, {'flags': 'a'});
+
+
+  var logFilesOFAllSelectedCases = [];
 
   for (var i = 0; i < cases.length; i++) {
     for (var j = 0; j < files.length; j++) {
-      logFilesOFAllCases.push(`${LOGS_HOME_PATH}${logType}/${cases[i]}/${logDir}/${files[j]}`);
+      logFilesOFAllSelectedCases.push(`${LOGS_HOME_PATH}${logType}/${logDir}/${files[j]}`);
     }
   }
 
-  // // hardcoding one file from logFilesOFAllCases;
-  var logFile = 'caselogs/access/neuron/access.log.1';
+  var query = '{"caseName":"APT100", "versionNum":"latest"}' // hardcoding, need to be triggered based on event
 
-// Method 1
-  // var stream = fs.createReadStream(logFile, 'utf8');
+  request.post('http://crud-node:5001/readioc', {form:{"query":query}}, ((err, resp, body) => {
 
-  // stream.on('data', (chunk) => {
-  //   if (chunk.includes('yasdsdshoo')) console.log('data of stream is', chunk.toString());
-  // });
-  // stream.on('error',(err) => {
-  //     console.log(err)
-  // });
-  // stream.on('close', (err) => {
-  //    console.log(err)
-  // });
+      console.log('In the posssstt!!', body)
+      var IOC = JSON.parse(body); // array of IOC of latest version
+      console.log('lets see the IOC is ', IOC);
 
+      for (var j = 0; j < logFilesOFAllSelectedCases.length; j++) {
+        var logFile = logFilesOFAllSelectedCases[j];
 
-// Method 2
-  // fs.readFile(logFile, (err, data) => {
-  //   console.log('data of file is', data);
-  //   if(data.indexOf('yahoowewewew') >= 0){
-  //    console.log('founddd', data)
-  //   }
-  // })
+        console.log('lalalalalalal', logFilesOFAllSelectedCases[j])
 
-  // console.log(logFilesOFAllCases)
+        var rl = readline.createInterface({
+          input: fs.createReadStream(logFile),
+          crlfDelay: Infinity
+        });
 
-
-
-// MEthod 3
-
-  var IOC = ['yahoo', 'splunk'];
-
-  var OUTPUT_PATH = LOGS_HOME_PATH+'result/'
-  var OUTPUT_FILE = OUTPUT_PATH+'test.txt'
-
-
-  const rl = readline.createInterface({
-    input: fs.createReadStream(logFile),
-    crlfDelay: Infinity
-  });
-
-  rl.on('line', (line) => {
-    if (!fs.existsSync(OUTPUT_PATH)) fs.mkdirSync(OUTPUT_PATH);
-
-    var writeStream = fs.createWriteStream(OUTPUT_FILE, {'flags': 'a'});
-
-    for (var i = 0; i < IOC.length; i++) {
-      if (line.includes(IOC[i])) {
-        writeStream.write(`Line from file ${logFile} for ${IOC[i]}: ${line} \n`);
-        console.log(`Line from file ${logFile} for ${IOC[i]}: ${line}`);
+        rl.on('line', (line) => {
+          for (var i = 0; i < IOC.length; i++) {
+            if (line.includes(IOC[i])) {
+              writeStream.write(`Line from file ${logFile} for ${IOC[i]}: ${line} \n`);
+              console.log(`Line from file ${logFile} for ${IOC[i]}: ${line}`);
+            }
+          }
+        });
       }
-    }
-
-    writeStream.end();
-  });
-
-    res.send('success')
-  }
+   }));
+    // writeStream.end();
+    res.send('async searching')
+}
 
 var port = process.env.PORT || 5002;
 
 app.listen(port, function() {
   console.log(`listening on port ${port}`);
 });
+
+
+
+
 
