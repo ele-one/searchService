@@ -4,8 +4,7 @@ var request = require('request')
 var app = express();
 var fs = require('fs');
 var readline = require('readline');
-var options = {  redirect: true }
-app.use(express.static(__dirname + '/../client/dist', options));
+app.use(express.static(__dirname + '/../client/dist'));
 
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
