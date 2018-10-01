@@ -55,7 +55,7 @@ class App extends React.Component {
   handleSubmit(e) {
     e.preventDefault();
     $.ajax({
-      url: '/search',
+      url: '/searchioc',
       method: 'POST',
       data: this.state,
       success: (result) => {
