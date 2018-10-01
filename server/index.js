@@ -4,7 +4,6 @@ var request = require('request')
 var app = express();
 var fs = require('fs');
 var readline = require('readline');
-
 app.use(express.static(__dirname + '/../client/dist'));
 
 app.use(bodyParser.json()); // for parsing application/json
@@ -18,7 +17,7 @@ app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x
 // app.post('/getDirs', getDirs);
 app.get('/getLogtypes', getLogtypes);
 app.get('/getCaseDirs/:logtype/:caseDir?', getCaseDirs);
-app.post('/search', search)
+app.post('/searchioc', searchioc)
 
 const SUCCESS_MSG = 'transaction succeeded';
 const ERROR_MSG = 'failed'
@@ -63,8 +62,8 @@ function getCaseDirs(req, res) {
   })
 }
 
-function search(req, res) {
-
+function searchioc(req, res) {
+  console.log('++++++++++++ inside searchioc +++++++++')
   var cases = req.body.selectedIOCCaseIDs;
   var logType = req.body.selectedLogType;
   var logDir = req.body.selectedCaseDir;
