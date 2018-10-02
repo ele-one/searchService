@@ -18,7 +18,8 @@ class App extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
 
     this.state = {
-      selectedIOCCaseIDs: [],
+      selectedIOCCaseID: [],
+      selectedIOCCaseVersion: null,
       selectedLogType: null,
       selectedCaseDir: null,
       selectedCaseFiles: []
@@ -26,9 +27,17 @@ class App extends React.Component {
   }
 
 
-  handleIOCCaseIDSelection(userInput) {
+  handleIOCCaseIDSelection(userInputIOCset, userInputIOCversion) {
+    debugger;
     this.setState({
-      selectedIOCCaseIDs: userInput
+      selectedIOCCaseID: userInputIOCset,
+      selectedIOCCaseVersion: userInputIOCversion
+    })
+  }
+
+  handleIOCCaseVersion(userInput) {
+    this.setState({
+      selectedIOCCaseVersion: userInput
     })
   }
 
