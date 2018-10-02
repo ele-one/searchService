@@ -15,12 +15,23 @@ class ListIOCCodes extends React.Component {
     super(props);
     this.handleChange = this.handleChange.bind(this)
     this.state = {
-      cases: ['APT28', 'APT30', 'Bearz', 'APT120', 'APT100'], //remove when ajax is working
+      iocSets: ['APT28', 'APT30', 'Bearz', 'APT120', 'APT100'], //remove when ajax is working
       value: []
     }
   }
 
   componentDidMount() {
+    // $.ajax({
+    //   url:'/getCaseDirs/' + logtype,
+    //   method:'GET',
+    //   success: (caseDirs) => {
+    //     this.setState({
+    //       iocSets: caseDirs + '_set'
+    //     })
+    //   },
+    //   error: (err) => {
+    //   }
+    // })
 
   }
 
@@ -30,9 +41,9 @@ class ListIOCCodes extends React.Component {
   }
 
   render() {
-    if (this.state.cases.length > 0) {
+    if (this.state.iocSets.length > 0) {
       var casesParsed = [];
-      this.state.cases.forEach( (c) => {
+      this.state.iocSets.forEach( (c) => {
         casesParsed.push({key: c, text: c, value: c});
       })
     }

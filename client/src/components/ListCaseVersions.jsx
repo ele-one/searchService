@@ -10,14 +10,30 @@ class ListCaseVersions extends React.Component {
 
   constructor(props) {
     super(props);
-    this.handleChange = this.handleChange.bind(this)
+    this.handleChange = this.handleChange.bind(this);
+    this.selectedCase = this.props.selectedIOCCase;
+
     this.state = {
-      versions: [100, 101, 102, 103], //remove when ajax is working
-      value: []
+      versions: [100], // every case has a version = 100
+      value: [],
     }
   }
 
   componentDidMount() {
+    // ajax call for verions of selected case this.selectedIOCCase
+    var caseName = this.selectedCase
+    $.ajax({
+      url:'/getCaseVersions/',
+      method:'GET',
+      data: { caseName: caseName },
+      success: (verions) => {
+        this.setState({
+          versions: versions
+        })
+      },
+      error: (err) => {
+      }
+    })
 
   }
 

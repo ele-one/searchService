@@ -85,8 +85,9 @@ class App extends React.Component {
     var ListCaseFilesComponent;
     var ListCaseVersionsComponent;
 
-    if (this.state.selectedIOCCaseID !== null) {
-      ListCaseVersionsComponent = <ListCaseVersions selectedCaseVersion={this.state.selectedCaseVersion} handleCaseVersionSelection={this.handleCaseVersionSelection} />
+
+    if (this.state.selectedIOCCaseID.length !== 0) {
+      ListCaseVersionsComponent = <ListCaseVersions selectedIOCCase={this.state.selectedIOCCase} handleCaseVersionSelection={this.handleCaseVersionSelection} />
     }
 
     if (this.state.selectedLogType !== null) {
@@ -109,7 +110,7 @@ class App extends React.Component {
             </Grid.Column>
 
             <Grid.Column>
-              <ListCaseVersions selectedCaseVersion={this.state.selectedCaseVersion} handleCaseVersionSelection={this.handleCaseVersionSelection} />
+              {ListCaseVersionsComponent}
             </Grid.Column>
           </Grid.Row>
 
