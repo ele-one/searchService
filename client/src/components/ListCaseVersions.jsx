@@ -14,7 +14,7 @@ class ListCaseVersions extends React.Component {
     this.selectedCase = this.props.selectedIOCCase;
     debugger
     this.state = {
-      versions: [100], // every case has a version = 100
+      versions: [], // every case has a version = 100
       value: [],
     }
   }
@@ -22,12 +22,11 @@ class ListCaseVersions extends React.Component {
   componentDidMount() {
     // ajax call for verions of selected case this.selectedIOCCase
     var caseName = this.selectedCase
-    debugger
     $.ajax({
-      url:'http://crud-node:5501/getCaseVersions/',
-      method:'GET',
+      url:'/getCaseVersions',
+      method:'POST',
       data: { caseName: caseName },
-      success: (verions) => {
+      success: (versions) => {
         this.setState({
           versions: versions
         })
@@ -35,7 +34,6 @@ class ListCaseVersions extends React.Component {
       error: (err) => {
       }
     })
-
   }
 
  handleChange(e, {value} ) {

@@ -15,7 +15,7 @@ class ListIOCCodes extends React.Component {
     super(props);
     this.handleChange = this.handleChange.bind(this)
     this.state = {
-      iocSets: ['APT28', 'APT30', 'Bearz', 'APT120', 'APT100'], //remove when ajax is working
+      iocSets: [], //remove when ajax is working
       value: null
     }
   }
@@ -23,11 +23,11 @@ class ListIOCCodes extends React.Component {
   componentDidMount() {
     // every case has a ioc_set
     $.ajax({
-      url:'http://crud-node:5501/getAllCases/' + logtype,
+      url:'/getAllCases',
       method:'GET',
       success: (caseName) => {
         this.setState({
-          iocSets: caseName + '_set'
+          iocSets: caseName
         })
       },
       error: (err) => {
@@ -45,7 +45,7 @@ class ListIOCCodes extends React.Component {
     if (this.state.iocSets.length > 0) {
       var casesParsed = [];
       this.state.iocSets.forEach( (c) => {
-        casesParsed.push({key: c, text: c, value: c});
+        casesParsed.push({key: c, text: c + '_set', value: c});
       })
     }
 
