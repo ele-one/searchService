@@ -37,7 +37,6 @@ class ListIOCCodes extends React.Component {
   }
 
  handleChange(e, {value} ) {
-
     this.setState({ value });
     this.props.handleIOCCaseIDSelection(value);
   }

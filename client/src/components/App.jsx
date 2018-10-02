@@ -89,7 +89,6 @@ class App extends React.Component {
 
 
     if (this.state.selectedIOCCaseID) {
-      debugger
       ListCaseVersionsComponent = <ListCaseVersions selectedIOCCase={this.state.selectedIOCCaseID} handleCaseVersionSelection={this.handleCaseVersionSelection} />
     }
 
