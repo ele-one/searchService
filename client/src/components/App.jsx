@@ -6,12 +6,13 @@ import ListIOCCodes from './ListIOCCodes.jsx';
 import ListLogtypes from './ListLogtypes.jsx';
 import ListCaseDirs from './ListCaseDirs.jsx';
 import ListCaseFiles from './ListCaseFiles.jsx';
-
+import ListCaseVersions from './ListCaseVersions.jsx'
 
 class App extends React.Component {
   constructor(props) {
     super(props)
     this.handleIOCCaseIDSelection = this.handleIOCCaseIDSelection.bind(this);
+    this.handleCaseVersionSelection = this.handleCaseVersionSelection.bind(this)
     this.handleLogTypeSelection = this.handleLogTypeSelection.bind(this);
     this.handleCaseDirSelection = this.handleCaseDirSelection.bind(this);
     this.handleCaseFilesSelection = this.handleCaseFilesSelection.bind(this);
@@ -20,6 +21,7 @@ class App extends React.Component {
     this.state = {
       selectedIOCCaseID: [],
       selectedIOCCaseVersion: null,
+      selectedCaseVersion: null,
       selectedLogType: null,
       selectedCaseDir: null,
       selectedCaseFiles: []
@@ -27,15 +29,16 @@ class App extends React.Component {
   }
 
 
-  handleIOCCaseIDSelection(userInputIOCset, userInputIOCversion) {
-    debugger;
+
+  handleIOCCaseIDSelection(userInput) {
     this.setState({
-      selectedIOCCaseID: userInputIOCset,
-      selectedIOCCaseVersion: userInputIOCversion
+      selectedIOCCaseID: userInput
     })
   }
 
-  handleIOCCaseVersion(userInput) {
+
+
+  handleCaseVersionSelection(userInput) {
     this.setState({
       selectedIOCCaseVersion: userInput
     })
@@ -80,6 +83,11 @@ class App extends React.Component {
   render() {
     var ListCaseDirsComponent;
     var ListCaseFilesComponent;
+    var ListCaseVersionsComponent;
+
+    if (this.state.selectedIOCCaseID !== null) {
+      ListCaseVersionsComponent = <ListCaseVersions selectedCaseVersion={this.state.selectedCaseVersion} handleCaseVersionSelection={this.handleCaseVersionSelection} />
+    }
 
     if (this.state.selectedLogType !== null) {
       ListCaseDirsComponent = <ListCaseDirs selectedLogType={this.state.selectedLogType} handleCaseDirSelection={this.handleCaseDirSelection} />
@@ -91,27 +99,42 @@ class App extends React.Component {
 
 
     return (
-      <Grid>
-        <Grid.Row>
-          <Grid.Column width={8}>
-            <form onSubmit={this.handleSubmit}>
+      <form onSubmit={this.handleSubmit}>
+        <Grid columns='equal'>
+
+
+          <Grid.Row>
+            <Grid.Column>
               <ListIOCCodes handleIOCCaseIDSelection={this.handleIOCCaseIDSelection}/>
-              <ListLogtypes handleLogTypeSelection={this.handleLogTypeSelection}/>
-              {ListCaseDirsComponent}
+            </Grid.Column>
+
+            <Grid.Column>
+              <ListCaseVersions selectedCaseVersion={this.state.selectedCaseVersion} handleCaseVersionSelection={this.handleCaseVersionSelection} />
+            </Grid.Column>
+          </Grid.Row>
+
+          <Grid.Row>
+            <Grid.Column>
+                <ListLogtypes handleLogTypeSelection={this.handleLogTypeSelection}/>
+            </Grid.Column>
+          </Grid.Row>
+
+
+          <Grid.Row>
+            <Grid.Column>
+                {ListCaseDirsComponent}
+            </Grid.Column>
+          </Grid.Row>
+
+          <Grid.Row>
+            <Grid.Column>
               {ListCaseFilesComponent}
-              <input type="submit" value="Submit" />
-            </form>
-          </Grid.Column>
-          <Grid.Column width={8}>
-          </Grid.Column>
-        </Grid.Row>
-        <Grid.Row>
-          <Grid.Column width={8}>
-          </Grid.Column>
-          <Grid.Column width={8}>
-          </Grid.Column>
-        </Grid.Row>
-      </Grid>
+            </Grid.Column>
+          </Grid.Row>
+
+          <input type="submit" value="Submit" />
+        </Grid>
+      </form>
       )
 
   }
