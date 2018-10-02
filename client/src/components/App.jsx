@@ -114,11 +114,21 @@ class App extends React.Component {
             <Grid.Column>
               {ListCaseVersionsComponent}
             </Grid.Column>
+
+             <Grid.Column>
+            </Grid.Column>
+
+
+            <Grid.Column>
+            </Grid.Column>
           </Grid.Row>
 
           <Grid.Row>
+
             <Grid.Column>
                 <ListLogtypes handleLogTypeSelection={this.handleLogTypeSelection}/>
+            </Grid.Column>
+            <Grid.Column>
             </Grid.Column>
           </Grid.Row>
 
@@ -127,11 +137,16 @@ class App extends React.Component {
             <Grid.Column>
                 {ListCaseDirsComponent}
             </Grid.Column>
+
+            <Grid.Column>
+            </Grid.Column>
           </Grid.Row>
 
           <Grid.Row>
             <Grid.Column>
               {ListCaseFilesComponent}
+            </Grid.Column>
+            <Grid.Column>
             </Grid.Column>
           </Grid.Row>
 
