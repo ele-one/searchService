@@ -18,8 +18,9 @@ class App extends React.Component {
     this.handleCaseFilesSelection = this.handleCaseFilesSelection.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
 
+
     this.state = {
-      selectedIOCCaseID: [],
+      selectedIOCCaseID: null,
       selectedIOCCaseVersion: null,
       selectedCaseVersion: null,
       selectedLogType: null,
@@ -31,6 +32,7 @@ class App extends React.Component {
 
 
   handleIOCCaseIDSelection(userInput) {
+
     this.setState({
       selectedIOCCaseID: userInput
     })
@@ -86,8 +88,9 @@ class App extends React.Component {
     var ListCaseVersionsComponent;
 
 
-    if (this.state.selectedIOCCaseID.length !== 0) {
-      ListCaseVersionsComponent = <ListCaseVersions selectedIOCCase={this.state.selectedIOCCase} handleCaseVersionSelection={this.handleCaseVersionSelection} />
+    if (this.state.selectedIOCCaseID) {
+      debugger
+      ListCaseVersionsComponent = <ListCaseVersions selectedIOCCase={this.state.selectedIOCCaseID} handleCaseVersionSelection={this.handleCaseVersionSelection} />
     }
 
     if (this.state.selectedLogType !== null) {

@@ -12,7 +12,7 @@ class ListCaseVersions extends React.Component {
     super(props);
     this.handleChange = this.handleChange.bind(this);
     this.selectedCase = this.props.selectedIOCCase;
-
+    debugger
     this.state = {
       versions: [100], // every case has a version = 100
       value: [],
@@ -22,8 +22,9 @@ class ListCaseVersions extends React.Component {
   componentDidMount() {
     // ajax call for verions of selected case this.selectedIOCCase
     var caseName = this.selectedCase
+    debugger
     $.ajax({
-      url:'/getCaseVersions/',
+      url:'http://crud-node:5501/getCaseVersions/',
       method:'GET',
       data: { caseName: caseName },
       success: (verions) => {
@@ -38,6 +39,7 @@ class ListCaseVersions extends React.Component {
   }
 
  handleChange(e, {value} ) {
+
     this.setState({ value });
     this.props.handleCaseVersionSelection(value);
   }

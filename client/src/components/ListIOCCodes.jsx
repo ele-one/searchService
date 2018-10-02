@@ -16,26 +16,28 @@ class ListIOCCodes extends React.Component {
     this.handleChange = this.handleChange.bind(this)
     this.state = {
       iocSets: ['APT28', 'APT30', 'Bearz', 'APT120', 'APT100'], //remove when ajax is working
-      value: []
+      value: null
     }
   }
 
   componentDidMount() {
-    // $.ajax({
-    //   url:'/getCaseDirs/' + logtype,
-    //   method:'GET',
-    //   success: (caseDirs) => {
-    //     this.setState({
-    //       iocSets: caseDirs + '_set'
-    //     })
-    //   },
-    //   error: (err) => {
-    //   }
-    // })
+    // every case has a ioc_set
+    $.ajax({
+      url:'http://crud-node:5501/getAllCases/' + logtype,
+      method:'GET',
+      success: (caseName) => {
+        this.setState({
+          iocSets: caseName + '_set'
+        })
+      },
+      error: (err) => {
+      }
+    })
 
   }
 
  handleChange(e, {value} ) {
+
     this.setState({ value });
     this.props.handleIOCCaseIDSelection(value);
   }
