@@ -12,16 +12,19 @@ class ListCaseVersions extends React.Component {
     super(props);
     this.handleChange = this.handleChange.bind(this);
     this.selectedCase = this.props.selectedIOCCase;
-    debugger
+    this.fetchCaseVersions = this.fetchCaseVersions.bind(this);
+
     this.state = {
-      versions: [], // every case has a version = 100
+      versions: [],
       value: [],
     }
   }
 
-  componentDidMount() {
+
+
+
+  fetchCaseVersions(caseName) {
     // ajax call for verions of selected case this.selectedIOCCase
-    var caseName = this.selectedCase
     $.ajax({
       url:'/getCaseVersions',
       method:'POST',
@@ -35,6 +38,19 @@ class ListCaseVersions extends React.Component {
       }
     })
   }
+
+
+  componentDidMount() {
+    this.fetchCaseVersions(this.props.selectedIOCCase);
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.selectedIOCCase !== prevProps.selectedIOCCase) {
+      this.fetchCaseVersions(this.props.selectedIOCCase);
+    }
+  }
+
+
 
  handleChange(e, {value} ) {
 
@@ -52,6 +68,7 @@ class ListCaseVersions extends React.Component {
 
 
     return (
+
       <DropdownVersions versions={versionParsed} handleChange={this.handleChange} />
 
     )
