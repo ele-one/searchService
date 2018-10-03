@@ -14,7 +14,6 @@ app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x
   API Routes
  + + + + + + + + + + + + + + + + + + + + + + + + + + + + + +*/
 
-// app.post('/getDirs', getDirs);
 app.get('/getLogtypes', getLogtypes);
 app.get('/getCaseDirs/:logtype/:caseDir?', getCaseDirs);
 app.post('/searchioc', searchioc)
@@ -69,33 +68,63 @@ var _getlistOFLogFiles = function(LOGS_HOME_PATH, logType, logDir, files) {
       return fs.statSync(LOGS_HOME_PATH + file).isDirectory();
     });
 
-    for (j = 0; j < logTypes; j++) {
-      var logDirPath = LOGS_HOME_PATH + logTypes[j] + '/' + logDir;
-      logFilesToSearch = fs.readdirSync(logDirPath).filter( (file) => {
-        return fs.statSync(logDirPath + '/' + file).isFile();
-      })
-    }
+    var logFilesInCaseDir = [];
 
+    for (j = 0; j < logTypes.length; j++) {
+      var logDirPath = LOGS_HOME_PATH + logTypes[j] + '/' + logDir;
+      if (fs.existsSync(logDirPath)) {
+        fs.readdirSync(logDirPath).filter( (file) => {
+          if (fs.statSync(logDirPath + '/' + file).isFile()) logFilesInCaseDir.push(logDirPath + '/' + file);
+        })
+      }
+    }
+    logFilesToSearch.push(...logFilesInCaseDir);
   }
 
   return logFilesToSearch;
 }
 
 function searchioc(req, res) {
-  console.log('++++++++++++ inside searchioc +++++++++')
+  console.log('++++++++++++ inside searchioc +++++++++', req.body)
 
-  // Flow 1 - request came from event triggers when new IOC(s) added.
-  if (req.body.caseID && req.body.caseIOCs) {
-    var IOCCaseID = req.body.caseID;
-    var logDir = IOCCaseID;
-    var IOCsDiff = req.body.IOCsDiff;
-    var IOCCaseVersion = req.body.caseVersion;
-    var logType = "*"
-    var OUTPUT_FILE_NAME = 'auto_search.txt';
-    var QUERY = `{"caseName":"${caseID}", "versionNum":"${caseVersion}"}`
+  if (!fs.existsSync(SEARCH_RESULT_PATH)) fs.mkdirSync(SEARCH_RESULT_PATH);
+  var OUTPUT_FILE_AUTO = SEARCH_RESULT_PATH + 'auto_search.txt';
+  var OUTPUT_FILE_MANUAL =  SEARCH_RESULT_PATH + 'manual_search.txt';
+
+  // Flow 1 - request came from crud service called on ioc create or update.
+  if (req.body.query) {
+    console.log('INSIDE AUTOOOOOOO')
+    var reqQuery = JSON.parse(req.body.query);
+    var IOCCaseName = reqQuery.caseName;
+    var logDir = IOCCaseName; // assumed that the case directory has same name as case name.
+    var IOCs = reqQuery.IOCsDiff;
+    var logType = "*";
+
+    var writeStream = fs.createWriteStream(OUTPUT_FILE_AUTO, {'flags': 'a'});
+    var logFilesToSearch = _getlistOFLogFiles(LOGS_HOME_PATH, logType, logDir, files);
+
+    for (var j = 0; j < logFilesToSearch.length; j++) {
+      var logFile = logFilesToSearch[j];
+      var rl = readline.createInterface({
+        input: fs.createReadStream(logFile),
+        crlfDelay: Infinity
+      });
+
+      rl.on('line', (line) => {
+        for (var i = 0; i < IOCs.length; i++) {
+          if (line.includes(IOCs[i])) {
+            writeStream.write(`Line from file ${logFile} for ${IOCs[i]}: ${line} \n`);
+            console.log(`Line from file ${logFile} for ${IOCs[i]}: ${line}`);
+          }
+        }
+      });
+    }
 
   // Flow 2 - the request came from the manual user request (via UI)
-  } else {
+  }
+
+  if (req.body.selectedIOCCaseID) {
+    console.log('INSIDE MANUALLLLLLLL')
     var IOCCaseID = req.body.selectedIOCCaseID;
     var IOCCaseVersion = req.body.selectedIOCCaseVersion || "latest"
     var logType = req.body.selectedLogType;
@@ -103,51 +132,39 @@ function searchioc(req, res) {
     var files = req.body.selectedCaseFiles;
     var OUTPUT_FILE_NAME = 'manual_search.txt';
     var QUERY = `{"caseName":"${IOCCaseID}", "versionNum":"${IOCCaseVersion}"}  `
-  }
 
+    var writeStream = fs.createWriteStream(OUTPUT_FILE_MANUAL, {'flags': 'a'});
+    var logFilesToSearch = _getlistOFLogFiles(LOGS_HOME_PATH, logType, logDir, files)
 
-  // var logFilesToSearch = [];
+    console.log('opopopopopopopopopopo', logFilesToSearch);
 
-  if (!fs.existsSync(SEARCH_RESULT_PATH)) fs.mkdirSync(SEARCH_RESULT_PATH);
-  var OUTPUT_FILE = SEARCH_RESULT_PATH + OUTPUT_FILE_NAME;
-  var writeStream = fs.createWriteStream(OUTPUT_FILE, {'flags': 'a'});
+     request.post('http://crud-node:5001/readioc', {form:{"query":QUERY}}, ((err, resp, body) => {
+        console.log('In the posssstt!!', body)
+        var IOCs = JSON.parse(body);
+        console.log('lalalalallalalallall')
+        for (var j = 0; j < logFilesToSearch.length; j++) {
+          var logFile = logFilesToSearch[j];
 
+          console.log('lalalalalalal', logFilesToSearch[j])
 
-  var logFilesToSearch = _getlistOFLogFiles(LOGS_HOME_PATH, logType, logDir, files)
+          var rl = readline.createInterface({
+            input: fs.createReadStream(logFile),
+            crlfDelay: Infinity
+          });
 
-  console.log('opopopopopopopopopopo', logFilesToSearch);
-
-  //var query = '{"caseName":"APT100", "versionNum":"latest"}' // hardcoding, need to be triggered based on event
-
-
-  request.post('http://crud-node:5001/readioc', {form:{"query":QUERY}}, ((err, resp, body) => {
-
-      console.log('In the posssstt!!', body)
-      var IOCs = JSON.parse(body); // array of IOCs of latest version
-      console.log('lets see the IOCs is ', IOCs);
-
-      for (var j = 0; j < logFilesToSearch.length; j++) {
-        var logFile = logFilesToSearch[j];
-
-        console.log('lalalalalalal', logFilesToSearch[j])
-
-        var rl = readline.createInterface({
-          input: fs.createReadStream(logFile),
-          crlfDelay: Infinity
-        });
-
-        rl.on('line', (line) => {
-          for (var i = 0; i < IOCs.length; i++) {
-            if (line.includes(IOCs[i])) {
-              writeStream.write(`Line from file ${logFile} for ${IOCs[i]}: ${line} \n`);
-              console.log(`Line from file ${logFile} for ${IOCs[i]}: ${line}`);
+          rl.on('line', (line) => {
+            for (var i = 0; i < IOCs.length; i++) {
+              if (line.includes(IOCs[i])) {
+                writeStream.write(`Line from file ${logFile} for ${IOCs[i]}: ${line} \n`);
+                console.log(`Line from file ${logFile} for ${IOCs[i]}: ${line}`);
+              }
             }
-          }
-        });
-      }
-   }));
-    // writeStream.end();
-    res.send('async searching')
+          });
+        }
+      }));
+        res.send('done!!!')
+        // writeStream.end();
+    }
 }
 
 var port = process.env.PORT || 5002;
@@ -155,8 +172,5 @@ var port = process.env.PORT || 5002;
 app.listen(port, function() {
   console.log(`listening on port ${port}`);
 });
-
-
-
 
 
