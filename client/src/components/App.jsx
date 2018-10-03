@@ -6,7 +6,8 @@ import ListIOCCodes from './ListIOCCodes.jsx';
 import ListLogtypes from './ListLogtypes.jsx';
 import ListCaseDirs from './ListCaseDirs.jsx';
 import ListCaseFiles from './ListCaseFiles.jsx';
-import ListCaseVersions from './ListCaseVersions.jsx'
+import ListCaseVersions from './ListCaseVersions.jsx';
+import ShowIOCs from './ShowIOCs.jsx';
 
 class App extends React.Component {
   constructor(props) {
@@ -73,7 +74,6 @@ class App extends React.Component {
       method: 'POST',
       data: this.state,
       success: (result) => {
-        debugger
         console.log('from search service', result)
       },
       error: (err) => {
@@ -86,10 +86,15 @@ class App extends React.Component {
     var ListCaseDirsComponent;
     var ListCaseFilesComponent;
     var ListCaseVersionsComponent;
+    var ShowIOCsComponent;
 
 
     if (this.state.selectedIOCCaseID) {
       ListCaseVersionsComponent = <ListCaseVersions selectedIOCCase={this.state.selectedIOCCaseID} handleCaseVersionSelection={this.handleCaseVersionSelection} />
+    }
+
+    if (this.state.selectedIOCCaseID && this.state.selectedIOCCaseVersion) {
+      ShowIOCsComponent = <ShowIOCs selectedIOCCase={this.state.selectedIOCCaseID} selectedIOCCaseVersion={this.state.selectedIOCCaseVersion} />
     }
 
     if (this.state.selectedLogType !== null) {
@@ -116,6 +121,7 @@ class App extends React.Component {
             </Grid.Column>
 
              <Grid.Column>
+              {ShowIOCsComponent}
             </Grid.Column>
 
 

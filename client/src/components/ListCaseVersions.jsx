@@ -11,7 +11,6 @@ class ListCaseVersions extends React.Component {
   constructor(props) {
     super(props);
     this.handleChange = this.handleChange.bind(this);
-    this.selectedCase = this.props.selectedIOCCase;
     this.fetchCaseVersions = this.fetchCaseVersions.bind(this);
 
     this.state = {
