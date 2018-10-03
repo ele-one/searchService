@@ -3,7 +3,9 @@ import $ from 'jquery';
 import { Dropdown } from 'semantic-ui-react';
 
 const DropdownCases = (props) => (
-  <Dropdown id='ioc' name='mycases' placeholder='Select IOC code names to search' fluid multiple selection options={props.cases}  onChange={props.handleChange}/>
+  /* <Dropdown id='ioc' name='mycases' placeholder='Select IOC code names to search' fluid multiple selection options={props.cases}  onChange={props.handleChange}/> */
+
+  <Dropdown id='ioc' placeholder='Select IOC set to search for' fluid search selection options={props.cases} onChange={props.handleChange} />
 )
 
 
@@ -13,12 +15,24 @@ class ListIOCCodes extends React.Component {
     super(props);
     this.handleChange = this.handleChange.bind(this)
     this.state = {
-      cases: ['APT28', 'APT30', 'Bearz', 'APT120', 'APT100'], //remove when ajax is working
-      value: []
+      iocSets: [], //remove when ajax is working
+      value: null
     }
   }
 
   componentDidMount() {
+    // every case has a ioc_set
+    $.ajax({
+      url:'/getAllCases',
+      method:'GET',
+      success: (caseName) => {
+        this.setState({
+          iocSets: caseName
+        })
+      },
+      error: (err) => {
+      }
+    })
 
   }
 
@@ -28,10 +42,10 @@ class ListIOCCodes extends React.Component {
   }
 
   render() {
-    if (this.state.cases.length > 0) {
+    if (this.state.iocSets.length > 0) {
       var casesParsed = [];
-      this.state.cases.forEach( (c) => {
-        casesParsed.push({key: c, text: c, value: c});
+      this.state.iocSets.forEach( (c) => {
+        casesParsed.push({key: c, text: c + '_set', value: c});
       })
     }
 
@@ -43,10 +57,6 @@ class ListIOCCodes extends React.Component {
 }
 
 
-
 export default ListIOCCodes;
-
-
-
 
 
