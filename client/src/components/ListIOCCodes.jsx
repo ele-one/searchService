@@ -15,7 +15,7 @@ class ListIOCCodes extends React.Component {
     super(props);
     this.handleChange = this.handleChange.bind(this)
     this.state = {
-      iocSets: [], //remove when ajax is working
+      iocSets: ['APT100', 'APT44'],
       value: null
     }
   }
