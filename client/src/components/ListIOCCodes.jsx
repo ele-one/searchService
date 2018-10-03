@@ -15,7 +15,7 @@ class ListIOCCodes extends React.Component {
     super(props);
     this.handleChange = this.handleChange.bind(this)
     this.state = {
-      iocSets: ['APT100', 'APT44'],
+      iocSets: [],
       value: null
     }
   }
