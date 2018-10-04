@@ -11,7 +11,6 @@ class ShowIOCs extends React.Component {
 
   constructor(props) {
     super(props);
-    // this.handleChange = this.handleChange.bind(this);
     this.fetchIOCs = this.fetchIOCs.bind(this);
 
     this.state = {
@@ -45,21 +44,20 @@ class ShowIOCs extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    debugger;
-    if (this.props.selectedIOCCase !== prevProps.selectedIOCCase ||  this.props.selectedIOCCaseVersion !== prevProps.selectedIOCCaseVersion) {
-      debugger;
-      this.fetchIOCs(this.props.selectedIOCCase,this.props.selectedIOCCaseVersion);
+
+   if (this.props.selectedIOCCase !== prevProps.selectedIOCCase &&  this.props.selectedIOCCaseVersion !== prevProps.selectedIOCCaseVersion) {
+        this.fetchIOCs(this.props.selectedIOCCase,this.props.selectedIOCCaseVersion);
       }
+
+    if (this.props.selectedIOCCase === prevProps.selectedIOCCase &&  this.props.selectedIOCCaseVersion !== prevProps.selectedIOCCaseVersion)
+      this.fetchIOCs(prevProps.selectedIOCCase,this.props.selectedIOCCaseVersion);
+
+
+     if ( this.props.selectedIOCCaseVersion !== prevProps.selectedIOCCaseVersion && this.props.selectedIOCCaseVersion === prevProps.selectedIOCCaseVersion)
+        this.fetchIOCs(this.props.selectedIOCCase, prevProps.selectedIOCCaseVersion);
 
   }
 
-
-
- // handleChange(e, {value} ) {
-
- //    this.setState({ value });
- //    //this.props.handleCaseAndVersionSelection(value);
- //  }
 
   render() {
 
@@ -69,7 +67,6 @@ class ShowIOCs extends React.Component {
        iocParsed = iocParsed + ioc + '\n';
       })
     }
-
 
     return (
 
