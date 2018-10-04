@@ -93,11 +93,11 @@ function searchioc(req, res) {
 
   // Flow 1 - request came from crud service called on ioc create or update.
   if (req.body.query) {
-    console.log('INSIDE AUTOOOOOOO')
+
     var reqQuery = JSON.parse(req.body.query);
     var IOCCaseName = reqQuery.caseName;
     var logDir = IOCCaseName; // assumed that the case directory has same name as case name.
-    var IOCs = reqQuery.IOCsDiff;
+    var IOCs = reqQuery.IOCsDiff.split(',');
     var logType = "*";
 
     var writeStream = fs.createWriteStream(OUTPUT_FILE_AUTO, {'flags': 'a'});
@@ -105,6 +105,7 @@ function searchioc(req, res) {
 
     for (var j = 0; j < logFilesToSearch.length; j++) {
       var logFile = logFilesToSearch[j];
+
       var rl = readline.createInterface({
         input: fs.createReadStream(logFile),
         crlfDelay: Infinity
@@ -117,14 +118,15 @@ function searchioc(req, res) {
             console.log(`Line from file ${logFile} for ${IOCs[i]}: ${line}`);
           }
         }
-      });
-    }
 
+      });
+
+    }
   // Flow 2 - the request came from the manual user request (via UI)
   }
 
   if (req.body.selectedIOCCaseID) {
-    console.log('INSIDE MANUALLLLLLLL')
+
     var IOCCaseID = req.body.selectedIOCCaseID;
     var IOCCaseVersion = req.body.selectedIOCCaseVersion || "latest"
     var logType = req.body.selectedLogType;
@@ -136,16 +138,12 @@ function searchioc(req, res) {
     var writeStream = fs.createWriteStream(OUTPUT_FILE_MANUAL, {'flags': 'a'});
     var logFilesToSearch = _getlistOFLogFiles(LOGS_HOME_PATH, logType, logDir, files)
 
-    console.log('opopopopopopopopopopo', logFilesToSearch);
 
      request.post('http://crud-node:5001/readioc', {form:{"query":QUERY}}, ((err, resp, body) => {
-        console.log('In the posssstt!!', body)
         var IOCs = JSON.parse(body);
-        console.log('lalalalallalalallall')
         for (var j = 0; j < logFilesToSearch.length; j++) {
           var logFile = logFilesToSearch[j];
 
-          console.log('lalalalalalal', logFilesToSearch[j])
 
           var rl = readline.createInterface({
             input: fs.createReadStream(logFile),
