@@ -88,6 +88,14 @@ class App extends React.Component {
     var ListCaseVersionsComponent;
     var ShowIOCsComponent;
 
+    var buttonStyle = {
+      background: '#996633',
+      fontSize: '12px',
+      color: 'white',
+      padding: '11px 35px',
+      float: 'right'
+    };
+
 
     if (this.state.selectedIOCCaseID) {
       ListCaseVersionsComponent = <ListCaseVersions selectedIOCCase={this.state.selectedIOCCaseID} handleCaseVersionSelection={this.handleCaseVersionSelection} />
@@ -107,6 +115,7 @@ class App extends React.Component {
 
 
     return (
+
       <form onSubmit={this.handleSubmit}>
         <Grid columns='equal'>
 
@@ -156,11 +165,11 @@ class App extends React.Component {
             </Grid.Column>
           </Grid.Row>
 
-          <input type="submit" value="Submit" />
+          <input type="submit" style={buttonStyle} value="Submit" />
         </Grid>
       </form>
-      )
 
+    )
   }
 
 }
