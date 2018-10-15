@@ -45,18 +45,19 @@ class ListCaseFiles extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
+    // if new log type  is selected then hide the case dirs appeared below (this had bug so fix below only hides when a page is refresh)
 
     if (this.props.selectedLogType !== prevProps.selectedLogType) {
       this.setState({
         unRender: true
       })
+      // fetch for new logtype
+      this.fetchCaseFiles(this.props.selectedLogType, this.props.selectedCaseDir);
     }
+
 
     if (this.props.selectedCaseDir !== prevProps.selectedCaseDir) {
       this.fetchCaseFiles(this.props.selectedLogType, this.props.selectedCaseDir);
-      this.setState({
-        unRender: false
-      })
     }
   }
 
@@ -69,7 +70,9 @@ class ListCaseFiles extends React.Component {
           caseFiles.unshift('Select All')
         }
         this.setState({
-          caseFiles: caseFiles
+          caseFiles: caseFiles,
+          unRender: false
+
       })
       },
       error: (err) => {
