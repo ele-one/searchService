@@ -5,7 +5,7 @@ import { Dropdown } from 'semantic-ui-react';
 const DropdownCases = (props) => (
   /* <Dropdown id='ioc' name='mycases' placeholder='Select IOC code names to search' fluid multiple selection options={props.cases}  onChange={props.handleChange}/> */
 
-  <Dropdown id='ioc' placeholder='Select IOC set to search for' fluid search selection options={props.cases} onChange={props.handleChange} />
+  <Dropdown class='required field' id='ioc' placeholder='Select IOC set to search for' fluid search selection options={props.cases} onChange={props.handleChange} />
 )
 
 

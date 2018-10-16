@@ -16,7 +16,8 @@ app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x
 
 app.get('/getLogtypes', getLogtypes);
 app.get('/getCaseDirs/:logtype/:caseDir?', getCaseDirs);
-app.post('/searchioc', searchioc)
+app.post('/searchioc', searchioc);
+app.get('/getResultFile', getResultFile);
 
 const SUCCESS_MSG = 'transaction succeeded';
 const ERROR_MSG = 'failed'
@@ -48,6 +49,29 @@ function getCaseDirs(req, res) {
     }
   })
 }
+
+
+function getResultFile(req, res) {
+  // var resultFile = __dirname + SEARCH_RESULT_PATH + 'manual_search.txt';
+
+  var resultFile = '/searchService/brownSearchResult/manual_search.txt';
+  if (fs.existsSync(resultFile)) {
+    res.sendFile(resultFile, function (err) {
+      if (err) {
+        console.log('^^^^^^^^^^^^^^^^ ', err);
+        // res.status(500);
+      } else {
+        console.log('Sent:', resultFile);
+      }
+    });
+  } else {
+    res.send('file not found')
+  }
+
+
+
+}
+
 
 
 var _getlistOFLogFiles = function(LOGS_HOME_PATH, logType, logDir, files) {
@@ -140,11 +164,13 @@ function searchioc(req, res) {
 
 
      request.post('http://crud-node:5001/readioc', {form:{"query":QUERY}}, ((err, resp, body) => {
+
+
+        if (err) res.status(500).end('Something broke!');
+
         var IOCs = JSON.parse(body);
         for (var j = 0; j < logFilesToSearch.length; j++) {
           var logFile = logFilesToSearch[j];
-
-
           var rl = readline.createInterface({
             input: fs.createReadStream(logFile),
             crlfDelay: Infinity
@@ -160,7 +186,7 @@ function searchioc(req, res) {
           });
         }
       }));
-        res.send('done!!!')
+        res.status(200).end('search completed!');
         // writeStream.end();
     }
 }

@@ -8,6 +8,7 @@ import ListCaseDirs from './ListCaseDirs.jsx';
 import ListCaseFiles from './ListCaseFiles.jsx';
 import ListCaseVersions from './ListCaseVersions.jsx';
 import ShowIOCs from './ShowIOCs.jsx';
+import SearchResult from './SearchResult.jsx';
 
 class App extends React.Component {
   constructor(props) {
@@ -18,6 +19,7 @@ class App extends React.Component {
     this.handleCaseDirSelection = this.handleCaseDirSelection.bind(this);
     this.handleCaseFilesSelection = this.handleCaseFilesSelection.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleClick = this.handleClick.bind(this);
 
 
     this.state = {
@@ -28,7 +30,9 @@ class App extends React.Component {
       selectedCaseDir: null,
       selectedCaseFiles: [],
       showWheel: false,
-      showErrorMsg: false
+      showErrorMsg: false,
+      submitMessage: null,
+      showSearchResult: false
     }
   }
 
@@ -69,6 +73,11 @@ class App extends React.Component {
     })
   }
 
+  handleClick(e) {
+    this.setState({
+      showSearchResult: true
+    })
+  }
 
   handleSubmit(e) {
      e.preventDefault();
@@ -80,29 +89,30 @@ class App extends React.Component {
     } else {
 
       this.setState({
-        showWheel: true
-      })
+        showWheel: true,
+        showSearchResult: false
+      });
+
       $.ajax({
         url: '/searchioc',
         method: 'POST',
         data: this.state,
         success: (result) => {
-          debugger;
           if (result) {
             this.setState({
               showWheel: false,
-              submitMessage: result
+              submitMessage: 'request submitted',
+              showSearchResult: true
             })
           }
           console.log('from search service', result)
         },
         error: (err) => {
-          debugger;
           console.log('error')
           if (err) {
             this.setState({
               showWheel: false,
-              submitMessage: err
+              submitMessage: 'something broke'
             })
           }
         }
@@ -122,6 +132,7 @@ class App extends React.Component {
     var ShowIOCsComponent;
     var wheel;
     var errorMsg;
+    var searchResultTextArea;
 
     var buttonStyle = {
       background: '#996633',
@@ -152,16 +163,23 @@ class App extends React.Component {
       wheel = <div> <img src="https://localhost:7777/wheel.gif" height="40" width="40"/> </div>
     }
 
-    if (this.state.showErrorMsg) {
+    if (this.state.showErrorMsg ) {
       const pStyle = {
         color: 'red',
       };
       errorMsg = <p style={pStyle}>  IOC set is required  </p>
     }
 
+    if (this.state.showSearchResult) {
+      searchResultTextArea = <SearchResult />
+      //  this.setState({
+      //   submitMessage: ''
+      // })
+    }
+
     return (
 
-
+      <div>
       <form onSubmit={this.handleSubmit}>
         <Grid columns='equal'>
           <Grid.Row>
@@ -214,15 +232,16 @@ class App extends React.Component {
             <br/> <br/>
           </div>
             {wheel}
-
+            <div> <p style={{color:'yellow'}}>  {this.state.submitMessage}  </p> </div>
         </Grid>
       </form>
-
+        <input type="submit" style={buttonStyle} value="Last search result" onClick={this.handleClick}/>
+        <div> {searchResultTextArea} </div>
+      </div>
     )
   }
 
 }
 
 export default App
-
 

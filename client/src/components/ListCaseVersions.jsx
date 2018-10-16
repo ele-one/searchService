@@ -3,7 +3,7 @@ import $ from 'jquery';
 import { Dropdown } from 'semantic-ui-react';
 
 const DropdownVersions = (props) => (
-  <Dropdown id='version' placeholder='Select version for the above IOC set' fluid search selection options={props.versions} onChange={props.handleChange}/>
+  <Dropdown class='required inline field' id='version' placeholder='Select version for the above IOC set' fluid search selection options={props.versions} onChange={props.handleChange}/>
 )
 
 class ListCaseVersions extends React.Component {

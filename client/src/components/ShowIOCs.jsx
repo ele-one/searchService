@@ -28,7 +28,6 @@ class ShowIOCs extends React.Component {
       method:'POST',
       data: {query: JSON.stringify({caseName: caseName, versionNum: versionNumber}) },
       success: (iocs) => {
-          debugger;
         this.setState({
           iocs: iocs
         })
