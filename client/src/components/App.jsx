@@ -26,7 +26,9 @@ class App extends React.Component {
       selectedCaseVersion: null,
       selectedLogType: null,
       selectedCaseDir: null,
-      selectedCaseFiles: []
+      selectedCaseFiles: [],
+      showWheel: false,
+      showErrorMsg: false
     }
   }
 
@@ -35,7 +37,8 @@ class App extends React.Component {
   handleIOCCaseIDSelection(userInput) {
 
     this.setState({
-      selectedIOCCaseID: userInput
+      selectedIOCCaseID: userInput,
+      showErrorMsg: false
     })
   }
 
@@ -68,18 +71,48 @@ class App extends React.Component {
 
 
   handleSubmit(e) {
-    e.preventDefault();
-    $.ajax({
-      url: '/searchioc',
-      method: 'POST',
-      data: this.state,
-      success: (result) => {
-        console.log('from search service', result)
-      },
-      error: (err) => {
-        console.log('error')
-      }
-    })
+     e.preventDefault();
+
+    if (!this.state.selectedIOCCaseID) {
+      this.setState({
+        showErrorMsg: true
+      })
+    } else {
+
+      this.setState({
+        showWheel: true
+      })
+      $.ajax({
+        url: '/searchioc',
+        method: 'POST',
+        data: this.state,
+        success: (result) => {
+          debugger;
+          if (result) {
+            this.setState({
+              showWheel: false,
+              submitMessage: result
+            })
+          }
+          console.log('from search service', result)
+        },
+        error: (err) => {
+          debugger;
+          console.log('error')
+          if (err) {
+            this.setState({
+              showWheel: false,
+              submitMessage: err
+            })
+          }
+        }
+      })
+
+
+
+    }
+
+
   }
 
   render() {
@@ -87,6 +120,8 @@ class App extends React.Component {
     var ListCaseFilesComponent;
     var ListCaseVersionsComponent;
     var ShowIOCsComponent;
+    var wheel;
+    var errorMsg;
 
     var buttonStyle = {
       background: '#996633',
@@ -113,15 +148,25 @@ class App extends React.Component {
       ListCaseFilesComponent = <ListCaseFiles selectedLogType={this.state.selectedLogType} selectedCaseDir={this.state.selectedCaseDir} handleCaseFilesSelection={this.handleCaseFilesSelection} />
     }
 
+    if (this.state.showWheel && !this.state.showErrorMsg) {
+      wheel = <div> <img src="https://localhost:7777/wheel.gif" height="40" width="40"/> </div>
+    }
+
+    if (this.state.showErrorMsg) {
+      const pStyle = {
+        color: 'red',
+      };
+      errorMsg = <p style={pStyle}>  IOC set is required  </p>
+    }
 
     return (
 
+
       <form onSubmit={this.handleSubmit}>
         <Grid columns='equal'>
-
-
           <Grid.Row>
             <Grid.Column>
+              {errorMsg}
               <ListIOCCodes handleIOCCaseIDSelection={this.handleIOCCaseIDSelection}/>
             </Grid.Column>
 
@@ -164,8 +209,12 @@ class App extends React.Component {
             <Grid.Column>
             </Grid.Column>
           </Grid.Row>
+          <div>
+            <input type="submit" style={buttonStyle} value="Submit" />
+            <br/> <br/>
+          </div>
+            {wheel}
 
-          <input type="submit" style={buttonStyle} value="Submit" />
         </Grid>
       </form>
 

@@ -72,8 +72,7 @@ class ListCaseFiles extends React.Component {
         this.setState({
           caseFiles: caseFiles,
           unRender: false
-
-      })
+        })
       },
       error: (err) => {
       }
