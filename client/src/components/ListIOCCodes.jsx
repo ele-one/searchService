@@ -22,12 +22,14 @@ class ListIOCCodes extends React.Component {
 
   componentDidMount() {
     // every case has a ioc_set
+
     $.ajax({
       url:'/getAllCases',
       method:'GET',
-      success: (caseName) => {
+      success: (cases) => {
+        var caseNames = cases.map((elem) => elem[0]) // cases=[ [name, createdAt, updatedAt], [name, createdAt, updatedAt], [...] ]
         this.setState({
-          iocSets: caseName
+          iocSets: caseNames
         })
       },
       error: (err) => {
