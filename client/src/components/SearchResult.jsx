@@ -1,6 +1,5 @@
 import React from 'react';
 import $ from 'jquery';
-import { TextArea} from 'semantic-ui-react'
 
 class SearchResult extends React.Component {
 
@@ -34,7 +33,7 @@ class SearchResult extends React.Component {
   render() {
     // debugger
     return (
-    <TextArea autoHeight id='iocText' placeholder='Search Result' value={this.state.result} />
+      <textarea  rows="20" cols="70" id='iocText' placeholder='Search Result' value={this.state.result} />
       )
     }
 }

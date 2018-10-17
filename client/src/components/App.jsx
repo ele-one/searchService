@@ -178,65 +178,83 @@ class App extends React.Component {
     }
 
     return (
-
       <div>
-      <form onSubmit={this.handleSubmit}>
-        <Grid columns='equal'>
+        <form onSubmit={this.handleSubmit}>
+          <Grid columns='equal'>
+            <Grid.Row>
+            </Grid.Row>
+
+            <Grid.Row>
+              <Grid.Column>
+                {errorMsg}
+                <ListIOCCodes handleIOCCaseIDSelection={this.handleIOCCaseIDSelection}/>
+              </Grid.Column>
+
+              <Grid.Column>
+                {ListCaseVersionsComponent}
+              </Grid.Column>
+
+               <Grid.Column>
+                {ShowIOCsComponent}
+              </Grid.Column>
+
+
+              <Grid.Column>
+              </Grid.Column>
+            </Grid.Row>
+
+            <Grid.Row>
+
+              <Grid.Column>
+                  <ListLogtypes handleLogTypeSelection={this.handleLogTypeSelection}/>
+              </Grid.Column>
+              <Grid.Column>
+              </Grid.Column>
+            </Grid.Row>
+
+
+            <Grid.Row>
+              <Grid.Column>
+                  {ListCaseDirsComponent}
+              </Grid.Column>
+
+              <Grid.Column>
+              </Grid.Column>
+            </Grid.Row>
+
+            <Grid.Row>
+              <Grid.Column>
+                {ListCaseFilesComponent}
+              </Grid.Column>
+              <Grid.Column>
+              </Grid.Column>
+            </Grid.Row>
+
+            <Grid.Row>
+                <input type="submit" style={buttonStyle} value="Submit" />
+              <Grid.Column>
+                <div> <p style={{color:'yellow'}}>  {this.state.submitMessage}  </p> </div>
+                {wheel}
+              </Grid.Column>
+              <Grid.Column>
+                 <input type="submit" style={buttonStyle} value="Last search result" onClick={this.handleClick}/>
+              </Grid.Column>
+
+              <Grid.Column>
+              </Grid.Column>
+
+              <Grid.Column>
+              </Grid.Column>
+            </Grid.Row>
+
           <Grid.Row>
             <Grid.Column>
-              {errorMsg}
-              <ListIOCCodes handleIOCCaseIDSelection={this.handleIOCCaseIDSelection}/>
-            </Grid.Column>
-
-            <Grid.Column>
-              {ListCaseVersionsComponent}
-            </Grid.Column>
-
-             <Grid.Column>
-              {ShowIOCsComponent}
-            </Grid.Column>
-
-
-            <Grid.Column>
+              <div> {searchResultTextArea} </div>
             </Grid.Column>
           </Grid.Row>
 
-          <Grid.Row>
-
-            <Grid.Column>
-                <ListLogtypes handleLogTypeSelection={this.handleLogTypeSelection}/>
-            </Grid.Column>
-            <Grid.Column>
-            </Grid.Column>
-          </Grid.Row>
-
-
-          <Grid.Row>
-            <Grid.Column>
-                {ListCaseDirsComponent}
-            </Grid.Column>
-
-            <Grid.Column>
-            </Grid.Column>
-          </Grid.Row>
-
-          <Grid.Row>
-            <Grid.Column>
-              {ListCaseFilesComponent}
-            </Grid.Column>
-            <Grid.Column>
-            </Grid.Column>
-          </Grid.Row>
-          <div>
-            <input type="submit" style={buttonStyle} value="Submit" />
-            <br/> <br/>
-          </div>
-            {wheel}
-            <div> <p style={{color:'yellow'}}>  {this.state.submitMessage}  </p> </div>
-        </Grid>
-      </form>
-        <input type="submit" style={buttonStyle} value="Last search result" onClick={this.handleClick}/>
-        <div> {searchResultTextArea} </div>
+          </Grid>
+        </form>
       </div>
     )
   }
