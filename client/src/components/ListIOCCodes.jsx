@@ -26,8 +26,7 @@ class ListIOCCodes extends React.Component {
     $.ajax({
       url:'/getAllCases',
       method:'GET',
-      success: (cases) => {
-        var caseNames = cases.map((elem) => elem[0]) // cases=[ [name, createdAt, updatedAt], [name, createdAt, updatedAt], [...] ]
+      success: (caseNames) => {
         this.setState({
           iocSets: caseNames
         })
