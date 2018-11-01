@@ -159,7 +159,7 @@ function searchioc(req, res) {
     var OUTPUT_FILE_NAME = 'manual_search.txt';
     var QUERY = `{"caseName":"${IOCCaseID}", "versionNum":"${IOCCaseVersion}"}  `
 
-    var writeStream = fs.createWriteStream(OUTPUT_FILE_MANUAL, {'flags': 'a'});
+    var writeStream = fs.createWriteStream(OUTPUT_FILE_MANUAL, {'flags': 'w'});
     var logFilesToSearch = _getlistOFLogFiles(LOGS_HOME_PATH, logType, logDir, files)
 
 
